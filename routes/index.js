@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/about', (req, res, next) => {
   res.render('about', {
     title: 'About Car Tracker',
-    message: 'This app is built with MEAN stack.'
+    message: 'You are now at the about page.'
   });
 });
 
