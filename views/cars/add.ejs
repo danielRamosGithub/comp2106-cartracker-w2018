@@ -1,0 +1,25 @@
+<% include ../partials/header.ejs %>
+
+    <h1><%= title %></h1>
+
+    <form method="post">
+        <fieldset class="form-group">
+            <label class="control-label col-md-2" for="make">Make: *</label>
+            <input type="text" name="make" id="make" required />
+        </fieldset>
+        <fieldset class="form-group">
+            <label class="control-label col-md-2" for="model">Model: *</label>
+            <input type="text" name="model" id="model" required />
+        </fieldset>
+        <fieldset class="form-group">
+            <label class="control-label col-md-2" for="year">Year: *</label>
+            <input type="text" name="year" id="year" required />
+        </fieldset>
+        <fieldset class="form-group">
+            <label class="control-label col-md-2" for="colour">Colour:</label>
+            <input type="text" name="colour" id="colour" required />
+        </fieldset>
+        <button class="offset-md-2 btn btn-primary">Save</button>
+    </form>
+
+<% include ../partials/footer.ejs %>

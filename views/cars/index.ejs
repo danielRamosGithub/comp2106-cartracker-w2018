@@ -1,0 +1,23 @@
+<!-- home page for cars section -->
+<% include ../partials/header.ejs %>
+
+    <h1><%= title %></h1>
+
+    <a href="/cars/add">Add a New Car</a>
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Model</th>
+            <th>Make</th>
+            <th>Year</th>
+        </tr>
+        <% for(let i = 0; i < cars.length; i++) { %>
+            <tr>
+                <td><%= cars[i].model %></td>
+                <td><%= cars[i].make %></td>
+                <td><%= cars[i].year %></td>
+            </tr>
+        <% } %>
+    </table>
+
+<% include ../partials/footer.ejs %>
