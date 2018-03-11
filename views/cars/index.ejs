@@ -10,12 +10,18 @@
             <th>Model</th>
             <th>Make</th>
             <th>Year</th>
+            <th>Actions</th>
         </tr>
         <% for(let i = 0; i < cars.length; i++) { %>
             <tr>
                 <td><%= cars[i].model %></td>
                 <td><%= cars[i].make %></td>
                 <td><%= cars[i].year %></td>
+                <td>
+                    <a href="/cars/edit/<%= cars[i]._id %>" class="btn btn-info">Edit</a>
+                    <a href="/cars/delete/<%= cars[i]._id %>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
+
+                </td>
             </tr>
         <% } %>
     </table>

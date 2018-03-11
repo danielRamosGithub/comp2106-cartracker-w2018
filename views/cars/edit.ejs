@@ -5,19 +5,19 @@
     <form method="post">
         <fieldset class="form-group">
             <label class="control-label col-md-2" for="make">Make: *</label>
-            <input type="text" name="make" id="make" required />
+            <input type="text" name="make" id="make" required value="<%= car.make %>"/>
         </fieldset>
         <fieldset class="form-group">
             <label class="control-label col-md-2" for="model">Model: *</label>
-            <input type="text" name="model" id="model" required />
+            <input type="text" name="model" id="model" required value="<%= car.model %>"/>
         </fieldset>
         <fieldset class="form-group">
             <label class="control-label col-md-2" for="year">Year: *</label>
-            <input type="number" name="year" id="year" required />
+            <input type="number" name="year" id="year" required value="<%= car.year %>" />
         </fieldset>
         <fieldset class="form-group">
             <label class="control-label col-md-2" for="colour">Colour:</label>
-            <input type="text" name="colour" id="colour" />
+            <input type="text" name="colour" id="colour" value="<%= car.colour %>" />
         </fieldset>
         <button class="offset-md-2 btn btn-primary">Save</button>
     </form>
