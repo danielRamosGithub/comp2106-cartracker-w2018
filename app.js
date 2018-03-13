@@ -8,9 +8,12 @@ var bodyParser = require('body-parser');
 // references we added
 const mongoose = require('mongoose');
 const config = require('./config/globals');
+const passport = require('passport');
+const session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+// var users = require('./routes/users');
 const cars = require('./routes/cars');
 
 var app = express();
@@ -28,11 +31,29 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
+// app.use('/users', users);
 app.use('/cars', cars);
 
 // db connection
 mongoose.connect(config.db);
+
+// passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(session({
+  secret: 'any string for salting here',
+  resave: true,
+  saveUninitialized: false
+}));
+
+// reference User model
+const User = require('./models/user');
+passport.use(User.createStrategy());
+
+// session management for users
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
