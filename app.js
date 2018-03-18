@@ -30,13 +30,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-// app.use('/users', users);
-app.use('/cars', cars);
-
-// db connection
-mongoose.connect(config.db);
-
 // passport configuration
 app.use(passport.initialize());
 app.use(passport.session());
@@ -46,6 +39,13 @@ app.use(session({
   resave: true,
   saveUninitialized: false
 }));
+
+app.use('/', index);
+// app.use('/users', users);
+app.use('/cars', cars);
+
+// db connection
+mongoose.connect(config.db);
 
 // reference User model
 const User = require('./models/user');
