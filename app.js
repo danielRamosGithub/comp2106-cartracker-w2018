@@ -10,7 +10,8 @@ const mongoose = require('mongoose');
 const config = require('./config/globals');
 const passport = require('passport');
 const session = require('express-session');
-var LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var index = require('./routes/index');
 // var users = require('./routes/users');
@@ -30,9 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// passport configuration
-app.use(passport.initialize());
-app.use(passport.session());
+// db connection
+mongoose.connect(config.db);
 
 app.use(session({
   secret: 'any string for salting here',
@@ -40,20 +40,38 @@ app.use(session({
   saveUninitialized: false
 }));
 
-app.use('/', index);
-// app.use('/users', users);
-app.use('/cars', cars);
-
-// db connection
-mongoose.connect(config.db);
+// passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
 
 // reference User model
 const User = require('./models/user');
 passport.use(User.createStrategy());
 
+// google auth strategy
+passport.use(new googleStrategy({
+  clientID: config.google.googleClientId,
+  clientSecret: config.google.googleClientSecret,
+  callbackURL: config.google.googleCallbackURL,
+  profileFields: ['id', 'emails']
+}, 
+  (accessToken, refreshToken, profile, callback) => {
+    User.findOrCreate({
+      googleId: profile.id,
+      username: profile.emails[0].value
+    }, (err, user) => {
+      return callback(err, user);
+    });
+  }
+));
+
 // session management for users
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use('/', index);
+// app.use('/users', users);
+app.use('/cars', cars);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

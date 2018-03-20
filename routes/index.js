@@ -9,22 +9,25 @@ const User = require('../models/user');
 router.get('/about', (req, res, next) => {
   res.render('about', {
     title: 'About Car Tracker',
-    message: 'You are now at the about page.'
+    message: 'You are now at the about page.',
+    user: req.user
   });
 });
 
-/* GET About page. */
+/* GET Contact page. */
 router.get('/contact', (req, res, next) => {
   res.render('contact', {
     title: 'Contact Us',
-    message: 'You are now at the contact page.'
+    message: 'You are now at the contact page.',
+    user: req.user
   });
 });
 
 // GET: /register
 router.get('/register', (req, res, next) => {
   res.render('register', {
-    title: 'Register'
+    title: 'Register',
+    user: req.user
   });
 });
 
@@ -49,23 +52,59 @@ router.post('/register', (req, res, next) => {
 
 // GET: /login
 router.get('/login', (req, res, next) => {
+  // check for invalid login message
+  let messages = req.session.messages || [];
+
+  // clear the session messages
+  req.session.messages = [];
+
   res.render('login', {
-    title: 'Login'
- });
+    title: 'Login',
+    messages: messages,
+    user: req.user
+  });
 });
 
 // POST: /login
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/cars',
-  failureRedirect: '/login'
+  failureRedirect: '/login',
+  failureMessage: 'Invalid Login'
 }));
+
+// GET: /logout
+router.get('/logout', (req, res, next) => {
+  // clear any session messages
+  req.session.messages = [];
+  // end the user's session
+  req.logout();
+  // redirect to login or home page
+  res.redirect('/');
+});
+
+// GET: /google
+router.get('/google', passport.authenticate('google', {
+  scope: ['profile', 'email']
+}));
+
+// GET: /google/callback
+router.get('/google/callback', passport.authenticate('google', {
+  failureRedirect: '/login',
+  failureMessage: 'Invalid Login',
+  scope: 'email'
+}),
+(req, res, next) => {
+  res.redirect('/cars');
+});
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
   res.render('index', { 
     title: 'Car Tracker',
-    message: 'COMP2106 In-Class Node Application' 
+    message: 'COMP2106 In-Class Node Application',
+    user: req.user 
   });
 });
+
 
 module.exports = router;

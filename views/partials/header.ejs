@@ -16,7 +16,12 @@
             <li class="nav-item"><a  class="nav-link" href="/contact">Contact</a></li>
             <li class="nav-item"><a  class="nav-link" href="/cars">Cars</a></li>
 
-            <li class="nav-item"><a  class="nav-link" href="/register">Register</a></li>
-            <li class="nav-item"><a  class="nav-link" href="/login">Login</a></li>
+            <% if( !user) { %>
+                <li class="nav-item"><a  class="nav-link" href="/register">Register</a></li>
+                <li class="nav-item"><a  class="nav-link" href="/login">Login</a></li>
+            <% } else { %>
+                <li class="nav item"><p><% user.username %></p></li>
+                <li class="nav-item"><a href="/logout" class="nav-link">Logout</a></li>
+            <% } %>
         </ul>
     </nav>

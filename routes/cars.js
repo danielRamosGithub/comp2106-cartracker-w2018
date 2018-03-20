@@ -3,8 +3,10 @@ var express = require('express');
 var router = express.Router();
 const Car = require('../models/car');
 
+const functions = require('../config/functions');
+
 // GET: /cars
-router.get('/', (req, res, next) => {
+router.get('/', functions.isLoggedIn, (req, res, next) => {
     // get car documents from db
     Car.find((err, cars) => {
         if(err) {
@@ -12,21 +14,23 @@ router.get('/', (req, res, next) => {
         } else {
             res.render('cars/index', {
                 title: 'Car List',
-                cars: cars
+                cars: cars,
+                user: req.user
             });
         }
     });
 });
 
 // GET: /cars/add
-router.get('/add', (req, res, next) => {
+router.get('/add', functions.isLoggedIn, (req, res, next) => {
     res.render('cars/add', {
-        title: 'Add a new car'
+        title: 'Add a new car',
+        user: req.user
     });
 });
 
 // POST: /cars/add
-router.post('/add', (req, res, next) => {
+router.post('/add',  functions.isLoggedIn, (req, res, next) => {
     Car.create({
         make: req.body.make,
         model: req.body.model,
@@ -42,7 +46,7 @@ router.post('/add', (req, res, next) => {
 });
 
 // GET: /cars/delete/abc123
-router.get('/delete/:_id', (req, res, next) => {
+router.get('/delete/:_id', functions.isLoggedIn, (req, res, next) => {
     // get the _id parameter from the url and store in a local variable
     let _id = req.params._id;
 
@@ -51,13 +55,13 @@ router.get('/delete/:_id', (req, res, next) => {
         if (err) {
             console.log(err);
         } else {
-            res.redirect('/cars');
+            res.redirect('/cars')
         }
     });
 });
 
 // GET: /cars/edit/abc123
-router.get('/edit/:_id', (req, res, next) => {
+router.get('/edit/:_id', functions.isLoggedIn, (req, res, next) => {
     let _id = req.params._id;
 
     // use Car model to find the selected document
@@ -66,15 +70,16 @@ router.get('/edit/:_id', (req, res, next) => {
             console.log(err);
         } else {
             res.render('cars/edit', {
-               title: 'Car Details',
-               car: car 
+                title: 'Car Details',
+                car: car ,
+                user: req.user
             });
         }
     });
 });
 
 // POST: /cars/edit/abc123
-router.post('/edit/:_id', (req, res, next) => {
+router.post('/edit/:_id', functions.isLoggedIn, (req, res, next) => {
     // get the _id from URL
     let _id = req.params._id;
 
@@ -102,9 +107,6 @@ router.post('/edit/:_id', (req, res, next) => {
                 res.redirect('/cars');
             }
     });
-
-
-
 });
 
 // make public
