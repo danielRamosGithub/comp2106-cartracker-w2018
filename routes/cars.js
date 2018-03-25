@@ -6,7 +6,7 @@ const Car = require('../models/car');
 const functions = require('../config/functions');
 
 // GET: /cars
-router.get('/', functions.isLoggedIn, (req, res, next) => {
+router.get('/', (req, res, next) => {
     // get car documents from db
     Car.find((err, cars) => {
         if(err) {
