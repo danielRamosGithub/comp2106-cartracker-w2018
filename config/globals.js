@@ -6,6 +6,7 @@ module.exports = {
     'google': {
         googleClientId: '570013571448-3lrl3i4p56u9o8p86dbfdf42idbknsqe.apps.googleusercontent.com',
         googleClientSecret: '-xRxKYAjy5mr1RhCbVP1QWYZ',
-        googleCallbackURL: 'http://localhost:3000/google/callback'
+        // googleCallbackURL: 'http://localhost:3000/google/callback'
+        googleCallbackURL: 'https://comp2106-w2018-cartracker.azurewebsites.net/google/callback'
     }
 }
