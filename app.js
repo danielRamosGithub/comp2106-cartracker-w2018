@@ -16,6 +16,7 @@ const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var index = require('./routes/index');
 // var users = require('./routes/users');
 const cars = require('./routes/cars');
+const manufacturer = require('./routes/manufacturers');
 
 var app = express();
 
@@ -72,6 +73,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use('/', index);
 // app.use('/users', users);
 app.use('/cars', cars);
+app.use('/manufacturers', manufacturer);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

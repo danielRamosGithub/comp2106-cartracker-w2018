@@ -4,8 +4,12 @@
 
     <form method="post">
         <fieldset class="form-group">
-            <label class="control-label col-md-2" for="make">Make: *</label>
-            <input type="text" name="make" id="make" required />
+            <label class="control-label col-md-2" for="make">Manufacturer: *</label>
+            <select name="make" id="make">
+                <% for(let i = 0; i < manufacturers.length; i++) { %>
+                    <option value="<%= manufacturers[i].name %>"><%= manufacturers[i].name %></option>
+                <% } %>
+            </select>
         </fieldset>
         <fieldset class="form-group">
             <label class="control-label col-md-2" for="model">Model: *</label>
@@ -22,4 +26,8 @@
         <button class="offset-md-2 btn btn-primary">Save</button>
     </form>
 
+
+    <div>
+        <p>Couldn't find the manufacturer? Add new <a href="/manufacturers/add">here</a>.</p>
+    </div>
 <% include ../partials/footer.ejs %>

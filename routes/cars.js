@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 const Car = require('../models/car');
+const Manufacturer = require('../models/manufacturer');
 
 const functions = require('../config/functions');
 
@@ -23,9 +24,16 @@ router.get('/', (req, res, next) => {
 
 // GET: /cars/add
 router.get('/add', functions.isLoggedIn, (req, res, next) => {
-    res.render('cars/add', {
-        title: 'Add a new car',
-        user: req.user
+    Manufacturer.find((err, manufacturers) => {
+        if(err) {
+            console.log(err);
+        } else {
+            res.render('cars/add', {
+                title: 'Add a new car',
+                manufacturers: manufacturers,
+                user: req.user
+            });
+        }
     });
 });
 
@@ -71,7 +79,7 @@ router.get('/edit/:_id', functions.isLoggedIn, (req, res, next) => {
         } else {
             res.render('cars/edit', {
                 title: 'Car Details',
-                car: car ,
+                car: car,
                 user: req.user
             });
         }
